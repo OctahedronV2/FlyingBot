@@ -1,0 +1,23 @@
+{
+  "name": "flyingbot",
+  "version": "1.0.0",
+  "description": "A multipurpose, highly customizable Discord bot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/FlyingSixtySix/flyingbot.git"
+  },
+  "author": "Andrew Black <andrewblack2656@gmail.com>",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/FlyingSixtySix/flyingbot#readme",
+  "dependencies": {
+    "discord.js": "^11.4.1",
+    "js-yaml": "^3.12.0",
+    "moment": "^2.22.2",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {}
+}
