@@ -113,6 +113,104 @@ function truncateStr(string, length, append = true) {
   return string
 }
 
+const timeRegex = /([0-9]+) ?((month|mnth|mth|mo)|(week|wk|w)|(day|d)|(hour|hr|h)|(minute|min|m)|(second|sec|s))s?/i
+
+function strToTime(string, extract = false) {
+  const split = string.split(' ')
+  const ret = []
+  let retStrParts = []
+  let prevPart = null
+  for (let i = 0; i < split.length; i++) {
+    const a = split[i].match(/([0-9]+)([\w])/i)
+    if (a != null && a.length === 3) {
+      // original, amount, unit
+      retStrParts.push(split[i])
+      const amount = parseInt(a[1])
+      let unit = split[i].replace(a[1], '') 
+      switch (unit) {
+        case 'mo': case 'mth': case 'mnth': case 'month':
+          unit = 'month'
+          break
+        case 'w': case 'wk': case 'week':
+          unit = 'week'
+          break
+        case 'h': case 'hr': case 'hour':
+          unit = 'hour'
+          break
+        case 'm': case 'min': case 'minute':
+          unit = 'minute'
+          break
+        case 's': case 'sec': case 'second':
+          unit = 'second'
+          break
+      }
+      ret.push({ unit: unit, amount: amount })
+      continue
+    }
+    if (prevPart == null) {
+      if (isNaN(split[i])) {
+        break
+      }
+      prevPart = parseInt(split[i])
+    } else {
+      if (timeRegex.test(prevPart + ' ' + split[i])) {
+        retStrParts.push(prevPart + ' ' + split[i])
+        switch (split[i].replace(/s$/i, '')) {
+          case 'mo': case 'mth': case 'mnth': case 'month':
+            split[i] = 'month'
+            break
+          case 'w': case 'wk': case 'week':
+            split[i] = 'week'
+            break
+          case 'h': case 'hr': case 'hour':
+            split[i] = 'hour'
+            break
+          case 'm': case 'min': case 'minute':
+            split[i] = 'minute'
+            break
+          case 's': case 'sec': case 'second':
+            split[i] = 'second'
+            break
+        }
+        const sanitized = split[i]
+        ret.push({ unit: sanitized, amount: prevPart })
+      }
+      prevPart = null
+    }
+  }
+  if (extract) {
+    return [ret, retStrParts.join(' ')]
+  }
+  return ret
+}
+
+function timeToMs(timeArr) {
+  let ms = 0
+  timeArr.forEach(time => {
+    switch (time.unit) {
+      case 'month':
+        ms += 2629746000 * time.amount
+        break
+      case 'week':
+        ms += 604800000 * time.amount
+        break
+      case 'day':
+        ms += 86400000 * time.amount
+        break
+      case 'hour':
+        ms += 3600000 * time.amount
+        break
+      case 'minute':
+        ms += 60000 * time.amount
+        break
+      case 'second':
+        ms += 1000 * time.amount
+        break
+    }
+  })
+  return ms
+}
+
 // Testing range
 
-module.exports = { Log, getUTCDate, padNumber, getCommands, getConfig, getSQLCon, queryDB, getGuildConfig, truncateStr }
+module.exports = { Log, getUTCDate, padNumber, getCommands, getConfig, getSQLCon, queryDB, getGuildConfig, truncateStr, timeRegex, strToTime, timeToMs }
