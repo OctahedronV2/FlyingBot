@@ -7,6 +7,7 @@ const config = utils.getConfig()
 
 client.on('ready', async () => {
   utils.Log.info('Ready')
+  await client.user.setActivity('Ready @ ' + moment.utc().format('HH:mm [UTC]') + ' | -help')
   utils.Log.debug('Handing out unmutes...')
   const mutes = await utils.queryDB('SELECT * FROM mutes')
   for (let i = 0; i < mutes.length; i++) {
