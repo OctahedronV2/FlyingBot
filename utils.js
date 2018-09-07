@@ -68,7 +68,8 @@ function getSQLCon () {
     con = mysql.createConnection({
       user: config.db.username,
       password: config.db.password,
-      database: config.db.database
+      database: config.db.database,
+      charset: 'utf8mb4_general_ci'
     })
     con.connect(err => {
       if (err) {
