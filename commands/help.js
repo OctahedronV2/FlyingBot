@@ -41,7 +41,8 @@ async function help(client, message) {
     'Default Permissions Bit: ' + match.defaultPermissions,
     // 'Custom Permissions Bit: ' + <permissions required>,
     // TODO: Test against custom permissions, or default (if null)
-    'Do you have permission? ' + (match.hasPermission(message) ? 'Yes' : 'No')
+    'Do you have permission? ' + (match.hasPermission(message) ? 'Yes' : 'No'),
+    'Description: ' + match.description
   ]
   return message.channel.send('Information for command `' + match.name + '`:\n```\n' + lines.join('\n') + '```')
 }
