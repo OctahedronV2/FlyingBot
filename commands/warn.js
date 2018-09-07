@@ -13,7 +13,7 @@ async function warn(client, message) {
   const mentionedMember = message.mentions.members.first()
   const reason = args.slice(2).length > 0 ? args.slice(2).join(' ') : null
   const { insertId } = await utils.queryDB('INSERT INTO warnings (guild_id, warned, issuer, reason) VALUES (?, ?, ?, ?)', [message.guild.id, mentionedMember.id, message.author.id, reason])
-  await utils.queryDB('INSERT INTO cases (guild_id, type, ref_id) VALUES (?, ?, ?)', [message.guild.id, 'warning', insert_id])
+  await utils.queryDB('INSERT INTO cases (guild_id, type, ref_id) VALUES (?, ?, ?)', [message.guild.id, 'warning', insertId])
   try {
     await mentionedMember.send('You have been warned on `' + message.guild.name + '` by `' + message.author.tag + ' (' + message.author.id + ')` for: ' + reason)
   } catch (err) {
