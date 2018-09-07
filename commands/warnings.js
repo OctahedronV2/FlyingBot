@@ -37,8 +37,8 @@ async function warnings(client, message) {
       'ID: ' + id,
       'Warned: ' + warnedUser.tag + ' (' + warnedUser.id + ')',
       'Issuer: ' + issuerUser.tag + ' (' + issuerUser.id + ')',
-      'Issed At: ' + issuedAt,
-      'Reason: ' + reason ? utils.truncateStr(reason, 1900) : 'No reason specified'
+      'Issued At: ' + issuedAt,
+      'Reason: ' + (reason ? utils.truncateStr(reason, 1900) : 'No reason specified')
     ]
     return message.channel.send('```\n' + lines.join('\n') + '```')
   }
