@@ -15,7 +15,7 @@ async function usage(client, message) {
   return message.channel.send('Usage:\n' + lines.join('\n'))
 }
 
-const command = new Command(usage, 'usage', 'Usage', 'Utility', 'usage', ['usage'], 'Provides usage statistics of the FlyingBot process.', 0, false)
+const command = new Command(usage, 'usage', 'Usage', 'Utility', 'usage', ['usage'], 'Provides statistics of FlyingBot\'s server.', 0, false)
 
 module.exports = { command }
 
