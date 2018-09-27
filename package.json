@@ -8,11 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/FlyingSixtySix/flyingbot.git"
+    "url": "git+ssh://git@github.com/FlyingSixtySix/FlyingBot.git"
   },
   "author": "Andrew Black <andrewblack2656@gmail.com>",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/FlyingSixtySix/flyingbot#readme",
+  "homepage": "https://github.com/FlyingSixtySix/FlyingBot#readme",
   "dependencies": {
     "discord.js": "^11.4.1",
     "humanize-duration": "^3.15.1",
