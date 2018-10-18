@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 class Command {
   constructor (executor, id, name, category, usage, aliases, description, defaultPermissions, serverOnly) {
     this.executor = executor
@@ -24,7 +25,7 @@ class Command {
       // No extra permissions in the database - use defaultPermissions
       return message.member.hasPermission(this.defaultPermissions)
     }
-    const { guild_id, channel_id, role_id, user_id, command_id, permissions, disallow } = permissionsRows[0]
+    const { guild_id, channel_id, role_id, user_id, command_id, permissions, disallow } = permissionsRows[0] // eslint-disable-line no-unused-vars
     // Now that we know there's a custom permissions set, time to figure it all out...
     // guild_id is going to be the same as the current guild ID, so no need to use that.
     // allow will determine whether the channel, role, or user is allowed to use command_id.
@@ -274,7 +275,7 @@ class Command {
           // channel_id, role_id, user_id, disallow
           if (message.channel.id === channel_id) {
             if (message.member.roles.has(role_id)) {
-              if (message.author.id === user) {
+              if (message.author.id === user_id) {
                 hasPermission = message.member.hasPermission(this.defaultPermissions)
                 if (disallow === 1) {
                   hasPermission = false
@@ -546,7 +547,7 @@ class Command {
           // guild_id, channel_id, role_id, user_id, disallow
           if (message.channel.id === channel_id) {
             if (message.member.roles.has(role_id)) {
-              if (message.author.id === user) {
+              if (message.author.id === user_id) {
                 hasPermission = message.member.hasPermission(this.defaultPermissions)
                 if (disallow === 1) {
                   hasPermission = false

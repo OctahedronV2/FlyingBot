@@ -104,7 +104,7 @@ async function getGuildConfig (guildID, insert) {
 }
 
 // Truncates string after length characters and appends '...' if append
-function truncateStr(string, length, append = true) {
+function truncateStr (string, length, append = true) {
   if (string.length > length) {
     if (append) {
       return string.substring(0, length) + '...'
@@ -116,7 +116,7 @@ function truncateStr(string, length, append = true) {
 
 const timeRegex = /([0-9]+) ?((month|mnth|mth|mo)|(week|wk|w)|(day|d)|(hour|hr|h)|(minute|min|m)|(second|sec|s))s?/i
 
-function strToTime(string, extract = false) {
+function strToTime (string, extract = false) {
   const split = string.split(' ')
   const ret = []
   let retStrParts = []
@@ -127,7 +127,7 @@ function strToTime(string, extract = false) {
       // original, amount, unit
       retStrParts.push(split[i])
       const amount = parseInt(a[1])
-      let unit = split[i].replace(a[1], '') 
+      let unit = split[i].replace(a[1], '')
       switch (unit) {
         case 'mo': case 'mth': case 'mnth': case 'month':
           unit = 'month'
@@ -185,7 +185,7 @@ function strToTime(string, extract = false) {
   return ret
 }
 
-function timeToMs(timeArr) {
+function timeToMs (timeArr) {
   let ms = 0
   timeArr.forEach(time => {
     switch (time.unit) {
