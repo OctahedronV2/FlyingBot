@@ -76,3 +76,5 @@ typings/
 *.swo
 *.swp
 
+# Visual Studio Code files
+.vscode
