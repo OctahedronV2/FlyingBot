@@ -14,7 +14,11 @@ class Log {
     const nowUTC = getUTCDate()
     const output = nowUTC + ' | ' + prefix + ' | ' + content.join(' ')
     console.log(output)
-    fs.appendFileSync(path.join(__dirname, 'logs', moment.utc().format('YYYY-MM-DD') + '.log'), output + '\n')
+    const logDir = path.join(__dirname, 'logs')
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir)
+    }
+    fs.appendFileSync(path.join(logDir, moment.utc().format('YYYY-MM-DD') + '.log'), output + '\n', { flag: 'a+' })
   }
   static info (...content) {
     Log.log('INFO', content)
