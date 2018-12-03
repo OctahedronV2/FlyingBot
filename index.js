@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const Discord = require('discord.js')
 const client = new Discord.Client()
 const moment = require('moment')
@@ -11,7 +12,7 @@ client.on('ready', async () => {
   utils.Log.debug('Handing out unmutes...')
   const mutes = await utils.queryDB('SELECT * FROM mutes')
   for (let i = 0; i < mutes.length; i++) {
-    const { id, guild_id, muted, issued_at, reason, unmute_at } = mutes[i]
+    const { id, guild_id, muted, issued_at, reason, unmute_at } = mutes[i] // eslint-disable-line no-unused-vars
     const guild = client.guilds.get(guild_id)
     const { muted_role_id } = await utils.getGuildConfig(guild_id, true)
     if (!moment().isAfter(unmute_at)) {
@@ -38,13 +39,12 @@ client.on('ready', async () => {
       }
     } catch (err) {
       utils.Log.debug('Could not unmute ' + muted + '.')
-      /*utils.Log.debug('Could not unmute ' + muted + ', removing from DB.')
-      utils.Log.error(err)
-      await utils.queryDB('DELETE FROM mutes WHERE id = ?', [id])
-      utils.Log.debug('Removed mute ' + id + '.')*/
     }
   }
 })
+
+let commands
+
 client.on('message', async message => {
   if (message.author.bot) {
     return
@@ -83,7 +83,7 @@ client.on('message', async message => {
 })
 client.on('guildCreate', g => utils.getGuildConfig(g.id, true))
 
-async function main() {
+async function main () {
   await utils.initDB()
   commands = await utils.getCommands()
   await client.login(config.token)
