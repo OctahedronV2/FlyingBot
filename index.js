@@ -84,6 +84,7 @@ client.on('message', async message => {
 client.on('guildCreate', g => utils.getGuildConfig(g.id, true))
 
 async function main() {
+  await utils.initDB()
   commands = await utils.getCommands()
   await client.login(config.token)
 }

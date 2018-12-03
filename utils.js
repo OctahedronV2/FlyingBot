@@ -93,6 +93,66 @@ function queryDB (query, args) {
   })
 }
 
+// Fills the database with the required tables if they don't already exist
+async function initDB () {
+  const con = getSQLCon()
+  con.query(`
+    CREATE TABLE IF NOT EXISTS cases (
+      id int PRIMARY KEY AUTO_INCREMENT,
+      guild_id varchar(18) NOT NULL,
+      type enum('ban', 'softban', 'kick', 'warning', 'mute'),
+      ref_id int
+    )`)
+  con.query(`
+    CREATE TABLE IF NOT EXISTS guilds (
+      id int PRIMARY KEY AUTO_INCREMENT,
+      guild_id varchar(18) NOT NULL,
+      prefix text,
+      ban_deletion_days tinyint,
+      muted_role_id varchar(18)
+    )`)
+  con.query(`
+    CREATE TABLE IF NOT EXISTS mutes (
+      id int PRIMARY KEY AUTO_INCREMENT,
+      guild_id varchar(18) NOT NULL,
+      muted varchar(18) NOT NULL,
+      issuer varchar(18) NOT NULL,
+      reason text,
+      issued_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      unmute_at timestamp NOT NULL
+    )`)
+  con.query(`
+    CREATE TABLE IF NOT EXISTS permissions (
+      id int PRIMARY KEY AUTO_INCREMENT,
+      guild_id varchar(18) NOT NULL,
+      channel_id varchar(18),
+      role_id varchar(18),
+      user_id varchar(18),
+      command_id text,
+      permissions int,
+      disallow boolean,
+      UNIQUE KEY constr_id (guild_id, channel_id, role_id, user_id)
+    )`)
+  con.query(`
+    CREATE TABLE IF NOT EXISTS tags (
+      id int PRIMARY KEY AUTO_INCREMENT,
+      guild_id varchar(18) NOT NULL,
+      name text,
+      creator varchar(18) NOT NULL,
+      created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      contents text NOT NULL
+    )`)
+  con.query(`
+    CREATE TABLE IF NOT EXISTS warnings (
+      id int PRIMARY KEY AUTO_INCREMENT,
+      guild_id varchar(18) NOT NULL,
+      warned varchar(18) NOT NULL,
+      issuer varchar(18) NOT NULL,
+      reason text,
+      issued_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`)
+}
+
 // Returns the first guild configuration row for guild_id, and if insert is true, inserts and recursivsly calls the function
 async function getGuildConfig (guildID, insert) {
   const res = await queryDB('SELECT * FROM guilds WHERE guild_id = ?', [guildID])
@@ -214,4 +274,4 @@ function timeToMs (timeArr) {
 
 // Testing range
 
-module.exports = { Log, getUTCDate, padNumber, getCommands, getConfig, getSQLCon, queryDB, getGuildConfig, truncateStr, timeRegex, strToTime, timeToMs }
+module.exports = { Log, getUTCDate, padNumber, getCommands, getConfig, getSQLCon, queryDB, initDB, getGuildConfig, truncateStr, timeRegex, strToTime, timeToMs }
