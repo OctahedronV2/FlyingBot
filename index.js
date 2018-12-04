@@ -4,7 +4,7 @@ const client = new Discord.Client()
 const moment = require('moment')
 
 const utils = require('./utils')
-const config = utils.getConfig()
+const config = require('./config.json')
 
 client.on('ready', async () => {
   utils.Log.info('Ready')

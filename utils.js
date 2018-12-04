@@ -59,16 +59,10 @@ async function getCommands () {
   return commands
 }
 
-// Reads config.yml and returns an object
-function getConfig () {
-  const config = fs.readFileSync(path.join(__dirname, 'config.yml'))
-  return yaml.safeLoad(config)
-}
-
 // Assigns con as a new SQL connection if it hasn't been set, and returns it
 function getSQLCon () {
   if (!con) {
-    const config = getConfig()
+    const config = require('./config.json')
     con = mysql.createConnection({
       user: config.db.username,
       password: config.db.password,
@@ -278,4 +272,4 @@ function timeToMs (timeArr) {
 
 // Testing range
 
-module.exports = { Log, getUTCDate, padNumber, getCommands, getConfig, getSQLCon, queryDB, initDB, getGuildConfig, truncateStr, timeRegex, strToTime, timeToMs }
+module.exports = { Log, getUTCDate, padNumber, getCommands, getSQLCon, queryDB, initDB, getGuildConfig, truncateStr, timeRegex, strToTime, timeToMs }
