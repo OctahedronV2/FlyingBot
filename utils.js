@@ -106,7 +106,7 @@ async function initDB () {
       id int PRIMARY KEY AUTO_INCREMENT,
       guild_id varchar(18) NOT NULL,
       prefix text,
-      ban_deletion_days tinyint,
+      ban_deletion_days tinyint DEFAULT 7,
       muted_role_id varchar(18)
     )`)
   con.query(`
@@ -152,10 +152,18 @@ async function initDB () {
 }
 
 // Returns the first guild configuration row for guild_id, and if insert is true, inserts and recursivsly calls the function
-async function getGuildConfig (guildID, insert) {
+async function getGuildConfig (client, guildID, insert) {
   const res = await queryDB('SELECT * FROM guilds WHERE guild_id = ?', [guildID])
   if (res.length < 1 && insert) {
-    await queryDB('INSERT INTO guilds (guild_id) VALUES (?)', [guildID])
+    const guild = client.guilds.get(guildID)
+    // Let's search for a role by the name of 'muted'.
+    const foundRole = guild.roles.find(role => role.name.toLowerCase() === 'muted')
+    // If there's already a muted role, let's use that.
+    if (!foundRole) {
+      await queryDB('INSERT INTO guilds (guild_id) VALUES (?)', [guildID])
+    } else {
+      await queryDB('INSERT INTO guilds (guild_id, muted_role_id) VALUES (?, ?)', [guildID, foundRole.id])
+    }
     return getGuildConfig(guildID, false)
   }
   return res[0]
